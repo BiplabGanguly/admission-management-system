@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'notice',
     'course',
-    'user'
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +127,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+
+MEDIA_ROOT  = BASE_DIR/"media/" 
+MEDIA_URL  = 'media/'
 
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # Default primary key field type

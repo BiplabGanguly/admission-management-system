@@ -14,7 +14,7 @@
   <title>BCREC</title>
 </head>
 
-<body>
+<body style="background-color: var(--second-bg-color);">
 <style>
     * {
     margin: 0;
@@ -69,10 +69,10 @@
               <a class="nav-link" href="{% url 'course'%}">Courses</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Admission</a>
+              <a class="nav-link" href="">Notice</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href=""><button type="button" class="btn btn-outline-light">
+              <a class="nav-link" href="{% url 'admin_login' %}"><button type="button" class="btn btn-outline-light">
                 Admin</button></a>
             </li>
           </ul>
