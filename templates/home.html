@@ -1,0 +1,114 @@
+{%extends 'temp.html'%}
+{%block content%}
+<style>
+    .home-img img{
+    width: 100%;
+    height: 60rem;
+}
+
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: initial;
+    text-align: left;
+}
+
+.home-content{
+    width: 40rem;
+}
+
+
+.homebtn .btn{
+    color: white;
+    border: 1px solid white;
+}
+/* about */
+.about{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--second-bg-color);
+}
+
+.about-img{
+    margin-top: 3rem;
+}
+
+.about-img img{
+    width: 100vh;
+    margin-left: 12vh;
+    margin-right: 8vh;
+    border:3px solid var(--main-color);
+    border-radius: 4%;
+    box-shadow: 0 0 1.5rem var(--main-color);
+}
+
+.about-content{
+    width: 34rem;
+}
+
+.about-content p{
+    text-align: justify;
+}
+
+.btn{
+    border:1px solid #99A3A4;
+    color:#99A3A4;
+}
+
+</style>
+<section class="home" id="home">
+
+    <div class="home-img">
+      <img src="../static/h1.jpg" alt="">
+    </div>
+    <div class="text-overlay">
+      <div class="home-content">
+        <h3>Welcome to our Universe...</h3>
+        <h1 style="font-size: 3.8rem;">BCR<span style="color: #99A3A4;">EC</span></h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Porro a aliquid fugit quia inventore, harum quae laborum, recusandae reiciendis,
+          modi minus animi aliquam laboriosam debitis ipsum quo eius velit. Illum. </p>
+      </div>
+      <div class="homebtn">
+        <a href="./register.html" class="btn">Register</a>
+        <a href="./studentlogin.html" class="btn">Login</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- about section -->
+   <!-- about us -->
+
+   <section class="about" id="about">
+    <div class="about-img">
+      <img src="../static/a2.jpg" alt="">
+    </div>
+    <div class="about-content">
+      <h2 class="heading">BCR<span style="color:#99A3A4;">EC</span></h2>
+      <p>ABC Kanpur has been established in year 1991
+        by the sincere efforts of our chairman Mr. Basu
+        with a view for making it a leading group of colleges
+        to become a Centre of Excellence with focus on Research and
+        Development and Incubation in the field of Engineering & Technology,
+        Basic & Applied Sciences, Humanities, Social Science & Management Architecture
+        and other professional courses. ABC aims to promote studies, research & innovation
+        in Engineering areas of higher education, to enhance skill development through continuing
+        education programme and knowledge and to achieve excellence in higher Technical education.</p>
+      <p>On academic front, the College is running six
+        Undergraduate Programmes in Chemical Engineering, Civil Engineering,
+        Computer Science & Engineering, Electrical Engineering, Electronics Engineering and
+        Mechanical Engineering . In view of the emerging need of the time, the College is
+        planning to start number of Programmes at Undergraduate and Post Graduate level in the near future.</p>
+
+      <button type="button" class="btn">Read more...</button>
+    </div>
+  </section>
+
+{%endblock%}
