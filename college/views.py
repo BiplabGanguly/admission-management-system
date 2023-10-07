@@ -1,14 +1,10 @@
 from django.shortcuts import render,redirect
-from notice.models import notice
-from user.models import profile
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from college.query import select_course,get_user,get_all_notice,get_profile
 
 def home(req):
-    data = notice.objects.all()
-    dt={}
-    dt['data']=data
+    dt = get_all_notice(req)
     return render(req,"home.html",dt)
 
 def course(req):
@@ -17,6 +13,13 @@ def course(req):
 def admin_login(req):
     return render(req,'adminlogin.html')
 
+def student_login(req):
+    return render(req,'studentlogin.html')
+
+def student_registration(req):
+    data = select_course(req)
+    return render(req,'studentregistration.html',data)
+
 
 def login_admin_post(req):
     if req.method == "POST":
@@ -24,7 +27,7 @@ def login_admin_post(req):
         userpass = req.POST['password']
       
         user = authenticate(username=username,password=userpass)
-        prof = profile.objects.get(user_id = user.id)
+        prof = get_profile(req,user.id)
 
         if user is not None and prof.profile == 'teacher':
             login(req, user)
@@ -35,11 +38,11 @@ def login_admin_post(req):
 
 @login_required(login_url='/')
 def admin_panel(req,uid):
-    user_data = User.objects.get(id = uid)
-    context = {'data' : user_data}
+    context = get_user(req,uid)
     return render(req,'adminpanel.html',context)
 
 
+@login_required(login_url='/')
 def admin_log_out(req):
     logout(req)
-    return redirect("home")
+    return redirect("admin_login")

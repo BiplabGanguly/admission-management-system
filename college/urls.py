@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin_post/',views.login_admin_post,name='admin_post'),
     path('admin_panel/<uid>/',views.admin_panel,name='admin'),
     path('admin_logout/',views.admin_log_out,name='admin_logout'),
+    path('student_login/',views.student_login,name='student_login'),
+    path('student_registration/',views.student_registration,name='student_registration')
 ]
 
 if settings.DEBUG:
