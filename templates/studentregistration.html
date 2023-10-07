@@ -110,23 +110,23 @@
         }
     </style>
     <div class="wrapper">
-        <form action="" method="post">
+        <form action="{% url 'student_post_ragistration' %}" method="post">
             {%csrf_token%}
             <h1>Student <span style="color: #99A3A4;">Registration</span></h1>
             <div class="part">
                 <div class="input-box">
-                    <input type="text" placeholder="first name" name="username">
+                    <input type="text" placeholder="first name" name="f_name">
                 </div>
                 <div class="input-box">
-                    <input type="text" placeholder="last name" name="username">
+                    <input type="text" placeholder="last name" name="l_name">
                 </div>
             </div>
             <div class="part">
                 <div class="input-box">
-                    <input type="text" placeholder="email" name="username">
+                    <input type="text" placeholder="email" name="email">
                 </div>
                 <div class="input-box">
-                    <select class="select-box" aria-label="Default select example">
+                    <select class="select-box" aria-label="Default select example" name="dept">
                         <option selected>Select Department</option>
                         {%for i in course%}
                         <option value="{{i.courses}}">{{i.courses}}</option>
@@ -141,10 +141,10 @@
             </div>
             <div class="part">
                 <div class="input-box">
-                    <input type="password" placeholder="password" name="password">
+                    <input type="password" placeholder="password" name="pword">
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="confirm password" name="password">
+                    <input type="password" placeholder="confirm password" name="c_pword">
                 </div>
             </div>
 

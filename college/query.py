@@ -25,8 +25,21 @@ def get_profile(req,uid):
     prof = profile.objects.get(user_id = uid)
     return prof
 
-def create_user(req,fname,lname,email,username,password,dept):
-    user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
+def create_user_admin(req,fname,lname,email,username,password,dept):
+    try:
+        user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
+    except:
+        return False
     prof = profile(dept = dept, profile = 'teacher',user_id=user.id,status ='pending')
+    prof.save()
+    return True
+
+
+def create_user_student(req,fname,lname,email,username,password,dept):
+    try:
+        user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
+    except:
+        return False
+    prof = profile(dept = dept, profile = 'student',user_id=user.id,status ='pending')
     prof.save()
     return True

@@ -32,6 +32,7 @@ urlpatterns = [
     path('admin_ragistration',views.admin_registration,name='admin_ragistration'),
     path('admin_post_ragistration/',views.admin_post_ragistration,name='admin_post_ragistration'),
     path('status/',views.status_page,name='status_page'),
+    path('student_ragistration_post',views.student_post_ragistration,name='student_post_ragistration'),
 ]
 
 if settings.DEBUG:
