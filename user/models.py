@@ -7,6 +7,8 @@ class profile(models.Model):
     status_choice = [('pending', 'pending'),
                      ('accept', 'accept'),
                      ('reject','reject'),]
+    profile_choice  = [('teacher','teacher'),
+                       ('student','student')]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fathers_name = models.CharField(max_length=255, blank=True)
     mothers_name = models.CharField(max_length=255, blank=True)
@@ -16,7 +18,7 @@ class profile(models.Model):
     dept = models.CharField(max_length=255, blank=True)
     user_img = models.FileField(upload_to="", blank=True)
     status = models.CharField(max_length=255, blank=True,choices=status_choice)
-    profile = models.CharField(max_length=255)
+    profile = models.CharField(max_length=255,choices=profile_choice)
 
     def __str__(self) -> str:
         return self.user.first_name

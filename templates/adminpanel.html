@@ -1,5 +1,6 @@
 <h2>admin panel</h2>
-{{data.first_name}}
+{{user_data.data.first_name}}
+{{prof_data.dept}}
 <form action="{% url 'admin_logout'%}" method="post">
     {%csrf_token%}
     <button type="submit">logout</button>

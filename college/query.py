@@ -24,3 +24,9 @@ def get_all_notice(req):
 def get_profile(req,uid):
     prof = profile.objects.get(user_id = uid)
     return prof
+
+def create_user(req,fname,lname,email,username,password,dept):
+    user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
+    prof = profile(dept = dept, profile = 'teacher',user_id=user.id,status ='pending')
+    prof.save()
+    return True
