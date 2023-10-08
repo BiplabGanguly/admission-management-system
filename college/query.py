@@ -30,16 +30,54 @@ def create_user_admin(req,fname,lname,email,username,password,dept):
         user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
     except:
         return False
-    prof = profile(dept = dept, profile = 'teacher',user_id=user.id,status ='pending')
+    prof = profile(dept = dept, profile = 'admin',user_id=user.id,status ='pending')
     prof.save()
     return True
 
 
-def create_user_student(req,fname,lname,email,username,password,dept):
+def create_user_student(req,fname,lname,email,username,password,dept,gender):
     try:
         user = User.objects.create_user(first_name = fname,last_name = lname,email= email,password=password,username=username)
     except:
         return False
-    prof = profile(dept = dept, profile = 'student',user_id=user.id,status ='pending')
+    prof = profile(dept = dept, profile = 'student',user_id=user.id,status ='pending',gender = gender)
     prof.save()
     return True
+
+
+def get_all_pending_student_dada(req,dept):
+    pending_student_data = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'pending')
+    return pending_student_data
+
+
+def update_student_accept(req,sid):
+    try:
+        profile.objects.filter(user_id = sid).update(status = 'accept')
+    except:
+        return False
+    return True
+
+
+def update_student_reject(req,sid):
+    try:
+        profile.objects.filter(user_id = sid).update(status = 'reject')
+    except:
+        return False
+    return True
+
+def get_all_admin_data(req):
+    all_admin_data = profile.objects.select_related('user').filter(profile = 'admin').filter(status = 'accept')
+    return all_admin_data
+
+
+def count_dept(req):
+    count_dept = courses.objects.all().count()
+    return count_dept
+
+def total_student(req):
+    total_student = profile.objects.select_related('user').filter(profile = 'student').filter(status = 'accept').count()
+    return total_student
+
+def total_dept_student(req,dept):
+    total_dept_student = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'accept').count()
+    return total_dept_student

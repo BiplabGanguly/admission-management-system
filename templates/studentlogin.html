@@ -97,14 +97,14 @@
         }
     </style>
     <div class="wrapper">
-        <form action="" method="post">
+        <form action="{% url 'login_student_post' %}" method="post">
             {%csrf_token%}
             <h1>Student <span style="color: #99A3A4;">Login</span></h1>
             <div class="input-box">
-                <input type="text" placeholder="username" name="username" value="biplab@123">
+                <input type="text" placeholder="username" name="username" value="arpan123">
             </div>
             <div class="input-box">
-                <input type="password" placeholder="password" name="password" value="Raja@999">
+                <input type="password" placeholder="password" name="password" value="arpan123">
             </div>
 
             <div class="remember-forgot">

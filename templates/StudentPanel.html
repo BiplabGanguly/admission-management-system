@@ -1,0 +1,7 @@
+<h2>Student panel</h2>
+{{user_data.data.first_name}}
+{{prof_data.dept}}
+<form action="{% url 'admin_logout'%}" method="post">
+    {%csrf_token%}
+    <button type="submit">logout</button>
+</form>

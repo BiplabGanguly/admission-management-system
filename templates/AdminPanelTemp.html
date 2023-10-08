@@ -1,0 +1,73 @@
+<!-- <center>
+    <h1>admin panel</h1>
+</center>
+<h2>Name - {{user_data.data.first_name}}</h2>
+<br>
+<form action="{% url 'admin_logout'%}" method="post">
+    {%csrf_token%}
+    <button type="submit">logout</button>
+</form>
+<br>
+<h3>Department - {{prof_data.dept}}</h3>
+
+{% for data in pending_data%}
+<center>
+    <table border="1">
+        <tr>
+            <td>{{data.user.first_name}} {{data.user.last_name}}</td>
+            <td>{{data.user.email}}</td>
+            <td>{{data.gender}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.user_id}}</td>
+            <td>
+                <form action="{%url 'accept_student' data.user_id %}" method="post">
+                    {%csrf_token%}
+                    <button type="submit">Accept</button>
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'reject_student' data.user_id %}" method="post">
+                    {%csrf_token%}
+                    <button type="submit">Reject</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</center>
+{%endfor%}
+
+ -->
+
+
+
+ <!-- Admin panel -->
+ <!DOCTYPE html>
+ <html lang="en">
+   <head>
+     <!-- Required meta tags -->
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <title>BCREC</title>
+   </head>
+   <body>
+    {%block style%}
+    {%endblock%}
+     <!-- container-scroller -->
+     <!-- plugins:js -->
+     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+     <!-- endinject -->
+     <!-- Plugin js for this page -->
+     <script src="assets/vendors/chart.js/Chart.min.js"></script>
+     <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
+     <!-- End plugin js for this page -->
+     <!-- inject:js -->
+     <script src="assets/js/off-canvas.js"></script>
+     <script src="assets/js/hoverable-collapse.js"></script>
+     <script src="assets/js/misc.js"></script>
+     <!-- endinject -->
+     <!-- Custom js for this page -->
+     <script src="assets/js/dashboard.js"></script>
+     <!-- <script src="assets/js/todolist.js"></script> -->
+     <!-- End custom js for this page -->
+   </body>
+ </html>

@@ -33,6 +33,11 @@ urlpatterns = [
     path('admin_post_ragistration/',views.admin_post_ragistration,name='admin_post_ragistration'),
     path('status/',views.status_page,name='status_page'),
     path('student_ragistration_post',views.student_post_ragistration,name='student_post_ragistration'),
+    path('student_panel/<sid>/',views.student_panel,name='student_panel'),
+    path('login_student_post/',views.login_student_post,name='login_student_post'),
+    path('accept_student/<sid>/',views.accept_student,name='accept_student'),
+    path('reject_student/<sid>/',views.reject_student,name='reject_student'),
+    path('pending_student/<uid>/',views.pending_student,name='pending_student'),
 ]
 
 if settings.DEBUG:

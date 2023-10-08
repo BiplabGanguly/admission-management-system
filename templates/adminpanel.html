@@ -1,7 +1,110 @@
-<h2>admin panel</h2>
-{{user_data.data.first_name}}
-{{prof_data.dept}}
-<form action="{% url 'admin_logout'%}" method="post">
-    {%csrf_token%}
-    <button type="submit">logout</button>
-</form>
+{% extends 'adminStyle.html' %}
+{%block partial %}
+  <!-- partial:partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'pending_student' user_data.data.id %}">
+          <span class="menu-title">Pending info</span>
+        </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="menu-title">Student Info</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="menu-title">Add Notice</span>
+          </a>
+        </li>
+    </ul>
+  </nav>
+
+     <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="page-header">
+            <h3 class="page-title">
+              Dashboard
+            </h3>
+            <nav aria-label="breadcrumb">
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                  <span></span>Overview 
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="row">
+            <div class="col-md-4 stretch-card grid-margin">
+              <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                  <h4 class="font-weight-normal mb-3">Total Student at Department
+                  </h4>
+                  <h2 class="mb-5">{{total_dept_student}}</h2>
+                  <h6 class="card-text">Only Department Include</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+              <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                  <h4 class="font-weight-normal mb-3">Total Departments
+                  </h4>
+                  <h2 class="mb-5">{{count_dept}}</h2>
+                  <h6 class="card-text">All departments include</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+              <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                  <h4 class="font-weight-normal mb-3">Total Student
+                  </h4>
+                  <h2 class="mb-5">{{total_student}}</h2>
+                  <h6 class="card-text">Including all departments</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">About Admins</h4>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th> Admin </th>
+                          <th> Emails </th>
+                          <th> Status </th>
+                          <th> Admin ID </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in all_admin %}
+                        <tr>
+                         <td>{{data.user.first_name}} {{data.user.last_name}}</td>
+                         <td>{{data.user.email}}</td>
+                         <td>{{data.status}}</td>
+                         <td>KW-12390{{data.user_id}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- main-panel ends -->
+      {%endblock%}

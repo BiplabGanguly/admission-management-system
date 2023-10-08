@@ -1,0 +1,95 @@
+{% extends 'adminStyle.html' %}
+{%block partial %}
+<style>
+    .table{
+        margin-top: 40px;
+        margin-left: 50px;
+        width: auto;
+        height: 500px;
+        text-align: center;
+        display:block;
+        box-shadow: 0 0 6px black;
+        color: white;
+        border-radius: 20px;
+        background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+    }
+    .table tbody tr{
+        text-align: center;
+        height: 50px;
+        width: 100%;
+    }
+
+    thead, tbody, tfoot, tr, td, th{
+        width: 290px;
+    }
+    .table tbody tr td{
+        padding: 0 30px 0 50px;
+        color: white;
+    }
+    .tblbtn{
+        height: 40px;
+    }
+</style>
+ <!-- partial:partials/_sidebar.html -->
+ <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{%url 'admin' uid %}">
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'pending_student' uid %}">
+          <span class="menu-title">Pending info</span>
+        </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="menu-title">Student Info</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="menu-title">Add Notice</span>
+          </a>
+        </li>
+    </ul>
+  </nav>
+<!-- Table -->
+<div class="main-panel">
+    <div class="content-wrapper">
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">NAME</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">GENDER</th>
+          <th scope="col" colspan="2">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in pending_data%}
+        <tr>
+            <td style="color: white;">{{data.user.first_name}} {{data.user.last_name}}</td>
+            <td style="color: white;">{{data.user.email}}</td>
+            <td style="color: white;">{{data.gender}}</td>
+          <td>
+            <form action="{%url 'accept_student' data.user_id %}" method="post">
+                {%csrf_token%}
+                <button type="submit" class="btn btn-outline-success">Accept</button>
+            </form>
+        </td>
+        <td>
+            <form action="{% url 'reject_student' data.user_id %}" method="post">
+                {%csrf_token%}
+                <button type="submit" class="btn btn-outline-danger">Reject</button>
+            </form>
+        </td>
+        </tr>
+        {%endfor%}
+        </tbody>
+
+</table>
+</div>
+</div>
+{%endblock%}
