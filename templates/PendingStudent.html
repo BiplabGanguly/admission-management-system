@@ -8,10 +8,9 @@
         height: 500px;
         text-align: center;
         display:block;
-        box-shadow: 0 0 6px black;
-        color: white;
+        box-shadow: 0 0 6px gray;
         border-radius: 20px;
-        background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+        background: transparent;
     }
     .table tbody tr{
         text-align: center;
@@ -24,7 +23,6 @@
     }
     .table tbody tr td{
         padding: 0 30px 0 50px;
-        color: white;
     }
     .tblbtn{
         height: 40px;
@@ -61,18 +59,18 @@
 <table class="table table-striped">
     <thead>
         <tr>
-          <th scope="col">NAME</th>
-          <th scope="col">EMAIL</th>
-          <th scope="col">GENDER</th>
-          <th scope="col" colspan="2">ACTION</th>
+          <th scope="col"><b>NAME</b></th>
+          <th scope="col"><b>EMAIL</b></th>
+          <th scope="col"><b>GENDER</b></th>
+          <th scope="col" colspan="2"><b>ACTION</b></th>
         </tr>
       </thead>
       <tbody>
         {% for data in pending_data%}
         <tr>
-            <td style="color: white;">{{data.user.first_name}} {{data.user.last_name}}</td>
-            <td style="color: white;">{{data.user.email}}</td>
-            <td style="color: white;">{{data.gender}}</td>
+            <td>{{data.user.first_name}} {{data.user.last_name}}</td>
+            <td>{{data.user.email}}</td>
+            <td>{{data.gender}}</td>
           <td>
             <form action="{%url 'accept_student' data.user_id %}" method="post">
                 {%csrf_token%}

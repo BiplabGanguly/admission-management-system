@@ -56,7 +56,7 @@ def login_admin_post(req):
                 return redirect("admin",user.id)
             elif prof.status == 'pending':
                 login(req, user)
-                return redirect('status_page')
+                return redirect('status_page',user.id)
             elif prof.status == 'reject':
                 return redirect('home')
         else:
@@ -95,7 +95,7 @@ def login_student_post(req):
                 return redirect("student_panel",user.id)
             elif prof.status == 'pending':
                 login(req, user)
-                return redirect('status_page')
+                return redirect('status_page',user.id)
             elif prof.status == 'reject':
                 return redirect('home')
         else:
@@ -124,8 +124,9 @@ def admin_panel(req,uid):
 
 
 @login_required(login_url='/')
-def status_page(req):
-    return render(req,'status.html')
+def status_page(req,uid):
+    user_data = query.get_user(req,uid)
+    return render(req,'status.html',user_data)
 
 @login_required(login_url='/')
 def admin_log_out(req):
@@ -144,7 +145,7 @@ def accept_student(req,sid):
     uid = req.session['uid']
     result = query.update_student_accept(req,sid)
     if result == True:
-        return redirect('admin',uid)
+        return redirect('pending_student',uid)
     else:
         return redirect('admin',uid)
     
@@ -153,7 +154,7 @@ def reject_student(req,sid):
     uid = req.session['uid']
     result = query.update_student_reject(req,sid)
     if result == True:
-        return redirect('admin',uid)
+        return redirect('pending_student',uid)
     else:
         return redirect('admin',uid)
     
