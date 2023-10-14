@@ -17,8 +17,7 @@ class profile(models.Model):
     address = models.TextField(blank=True)
     dept = models.CharField(max_length=255, blank=True)
     user_img = models.FileField(upload_to="", blank=True)
-    status = models.CharField(
-        max_length=255, blank=True, choices=status_choice)
+    status = models.CharField(max_length=255, blank=True, choices=status_choice)
     profile = models.CharField(max_length=255, choices=profile_choice)
 
     def __str__(self) -> str:
