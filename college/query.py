@@ -1,4 +1,4 @@
-from course.models import courses
+from course.models import courses, university, board_ten, board_twelve
 from django.contrib.auth.models import User
 from notice.models import notice
 from user.models import profile
@@ -19,6 +19,16 @@ def get_all_notice(req):
     notices = notice.objects.all()
     all_notice = {'data' : notices}
     return all_notice
+
+def get_all_course_model(req):
+    universitys = university.objects.all()
+    boardten = board_ten.objects.all()
+    boardtwelve = board_twelve.objects.all()
+    data = {'universitys' :universitys,
+            'boardten' : boardten,
+            'boardtwelve' : boardtwelve
+             }
+    return data
 
 
 def get_profile(req,uid):
@@ -74,9 +84,11 @@ def count_dept(req):
     count_dept = courses.objects.all().count()
     return count_dept
 
+
 def total_student(req):
     total_student = profile.objects.select_related('user').filter(profile = 'student').filter(status = 'accept').count()
     return total_student
+
 
 def total_dept_student(req,dept):
     total_dept_student = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'accept').count()

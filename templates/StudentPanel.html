@@ -1,7 +1,301 @@
-<h2>Student panel</h2>
-{{user_data.data.first_name}}
-{{prof_data.dept}}
-<form action="{% url 'admin_logout'%}" method="post">
-    {%csrf_token%}
-    <button type="submit">logout</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+
+<body>
+    <style>
+        body {
+            display: block;
+            place-items: center;
+            background: #616A6B;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            font-family: Garamond, serif;
+        }
+
+        h2 {
+            margin-left: 282px;
+        }
+
+        .wrapper {
+            width: 860px;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+            color: #fff;
+            border-radius: 10px;
+            padding: 30px 40px;
+            margin-top: 2.8rem;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        .wrapper h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Garamond, serif;
+        }
+
+        .wrapper .input-box {
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+
+        .input-box input {
+            width: 80%;
+            height: 20%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: white;
+            padding: 20px 45px 20px 20px;
+            font-family: Garamond, serif;
+        }
+
+        .input-box input::placeholder {
+            color: #99A3A4;
+        }
+
+        .wrapper .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            margin: -15px 0 15px;
+        }
+
+        .remember-forgot label {
+            margin-left: 30px;
+            margin-top: 30px;
+        }
+
+        .remember-forgot label input {
+            accent-color: white;
+            margin-right: 3px;
+        }
+
+        .btn {
+            width: 60px;
+            height: 40px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            font-family: Garamond, serif;
+        }
+
+        .part {
+            display: flex;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .input-box .inputfile {
+            padding: 20px 45px 20px 20px;
+            font-size: 12px;
+
+        }
+
+        .select-box {
+            width: 100%;
+            height: 105%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: white;
+            padding: 0 45px 0 20px;
+            font-family: Garamond, serif;
+        }
+
+        .select-box option {
+            background-color: transparent;
+            color: black;
+        }
+
+        .input-box .filedata{
+            width: 745px;
+        }
+
+        .btn1 {
+            width: 40%;
+            height: 40px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-left: 50px;
+            font-family: Garamond, serif;
+        }
+    </style>
+    <form action="{% url 'admin_logout'%}" method="post">
+        {%csrf_token%}
+        <button type="submit" class="btn">logout</button>
+    </form>
+    <div class="wrapper">
+        <h1>Register Mr. <span style="color: #99A3A4;">{{user_data.data.first_name}}</span></h1>
+    </div>
+
+    <form action="{% url 'student_post_ragistration' %}" method="post">
+        {%csrf_token%}
+        <h2>Personal <span style="color: #99A3A4;">Details</span></h2>
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <input type="text" placeholder="first name" name="f_name" value="{{user_data.data.first_name}}">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="last name" name="l_name" value="{{user_data.data.last_name}}">
+                </div>
+            </div>
+            <div class="part">
+                <div class="input-box">
+                    <input type="text" placeholder="email" name="email" value="{{user_data.data.email}}">
+                </div>
+                <div class="input-box">
+                    <input type="text" name="dept" value="{{prof_data.dept}}">
+                </div>
+            </div>
+            <div class="part">
+                <div class="input-box">
+                    <input type="text" name="dept" value="{{prof_data.gender}}">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="username" name="username" value="{{user_data.data.username}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <input type="text" placeholder="father's name" name="">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="mother's name" name="">
+                </div>
+            </div>
+            <div class="part">
+                <div class="input-box">
+                    <input class="inputfile" type="file">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="address" name="">
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Education <span style="color: #99A3A4;">Details</span></h2>
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <select class="select-box" aria-label="Default select example" name="dept">
+                        <option selected>select 10th Board</option>
+                        {%for i in data.boardten %}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="input-box">
+                    <input type="number" placeholder="10th percentage" name="">
+                </div>
+            </div>
+            <div class="part">
+                <div class="input-box">
+                    <input type="file" name="" class="filedata">
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <select class="select-box" aria-label="Default select example" name="dept">
+                        <option selected>select 12th Board</option>
+                        {%for i in data.boardtwelve %}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="input-box">
+                    <input type="number" placeholder="12th percentage" name="">
+                </div>
+            </div>
+            <div class="part">
+                <div class="input-box">
+                    <input type="file" placeholder="email" name="" class="filedata">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <select class="select-box" aria-label="Default select example" name="dept">
+                        <option selected>select University</option>
+                        {%for i in data.universitys %}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="CGPA" name="">
+                </div>
+            </div>
+        </div>
+
+        <h2>Sess<span style="color: #99A3A4;">ion</span></h2>
+        <div class="wrapper">
+            <div class="part">
+                <div class="input-box">
+                    <select class="select-box" aria-label="Default select example" name="dept">
+                        <option selected>session Start</option>
+                        {%for i in data.year %}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="input-box">
+                    <select class="select-box" aria-label="Default select example" name="dept">
+                        <option selected>session End</option>
+                        {%for i in data.year %}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="part">
+                <button type="reset" class="btn1">Refresh</button>
+                <button type="submit" class="btn1">Submit it</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -137,7 +137,8 @@ def admin_log_out(req):
 def student_panel(req,sid):
     user_data = query.get_user(req,sid)
     prof_data  = get_profile(req,sid)
-    context = {'user_data' : user_data, 'prof_data' : prof_data}
+    data = query.get_all_course_model(req)
+    context = {'user_data' : user_data, 'prof_data' : prof_data, 'data' : data}
     return render(req,'StudentPanel.html',context)
 
 @login_required(login_url='/')
