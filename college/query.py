@@ -1,4 +1,4 @@
-from course.models import courses, university, board_ten, board_twelve
+from course.models import courses, university, board_ten, board_twelve,session
 from django.contrib.auth.models import User
 from notice.models import notice
 from user.models import profile
@@ -24,9 +24,11 @@ def get_all_course_model(req):
     universitys = university.objects.all()
     boardten = board_ten.objects.all()
     boardtwelve = board_twelve.objects.all()
+    sess = session.objects.all()
     data = {'universitys' :universitys,
             'boardten' : boardten,
-            'boardtwelve' : boardtwelve
+            'boardtwelve' : boardtwelve,
+            'year' : sess
              }
     return data
 
@@ -93,3 +95,17 @@ def total_student(req):
 def total_dept_student(req,dept):
     total_dept_student = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'accept').count()
     return total_dept_student
+
+
+def add_student_details(req,uid,father_name, mother_name,gender,address,dept,date):
+    profile.objects.filter(user_id = uid).update(fathers_name = father_name, 
+                                                 mothers_name = mother_name,
+                                                  gender = gender,
+                                                   address = address,
+                                                    dept = dept,
+                                                     birth_date = date )
+    return True
+
+def add_student_images(req,uid,image):
+    profile.objects.filter(user_id = uid).update(user_img = image)
+    return True

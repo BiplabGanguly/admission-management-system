@@ -38,7 +38,9 @@ urlpatterns = [
     path('accept_student/<sid>/',views.accept_student,name='accept_student'),
     path('reject_student/<sid>/',views.reject_student,name='reject_student'),
     path('pending_student/<uid>/',views.pending_student,name='pending_student'),
+    path('add_student_data/<uid>/',views.add_student_data,name="add_student_data")
 ]
 
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+

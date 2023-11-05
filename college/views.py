@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from college.query import get_profile
 from college import query
+from django.core.files.storage import FileSystemStorage
 
 def home(req):
     dt = query.get_all_notice(req)
@@ -138,8 +139,11 @@ def student_panel(req,sid):
     user_data = query.get_user(req,sid)
     prof_data  = get_profile(req,sid)
     data = query.get_all_course_model(req)
-    context = {'user_data' : user_data, 'prof_data' : prof_data, 'data' : data}
+    context = {'user_data' : user_data,
+                'prof_data' : prof_data, 
+                'data' : data}
     return render(req,'StudentPanel.html',context)
+
 
 @login_required(login_url='/')
 def accept_student(req,sid):
@@ -173,3 +177,42 @@ def pending_student(req,uid):
     pending_context['prof_data'] = prof_data
     pending_context['pending_data'] = pending_data
     return render(req,'PendingStudent.html',pending_context)
+
+
+@login_required(login_url='/')
+def add_student_data(req,uid):
+
+    if req.method == 'POST' and req.FILES:
+        f_name = req.POST['f_name']
+        l_name = req.POST['l_name']
+        email = req.POST['email']
+        dept = req.POST['dept']
+        gender = req.POST['gender']
+        username = req.POST['username']
+        father_name = req.POST['father_name']
+        mother_name = req.POST['mother_name']
+        dob = req.POST['dob']
+        address = req.POST['address']
+        ten_board = req.POST['ten_board']
+        ten_percentage = req.POST['ten_percentage']
+        twelve_board = req.POST['twelve_board']
+        twelve_percentage = req.POST['twelve_percentage']
+        university = req.POST['university']
+        gpa = req.POST['gpa']
+        session_start = req.POST['session_start']
+        session_end = req.POST['session_end']
+
+        date = str(dob)
+        query.add_student_details(req,uid,father_name, mother_name,gender,address,dept,date)
+
+    if req.FILES:
+        personal_images = req.FILES['personal_image']
+        # ten_result = req.FILES['ten_result']
+        # twelve_result = req.FILES['twelve_result']
+
+        fs = FileSystemStorage(location='media/')
+        fs.save(personal_images.name, personal_images)
+
+        query.add_student_images(req,uid,personal_images.name)
+
+    return redirect('admin_login')
