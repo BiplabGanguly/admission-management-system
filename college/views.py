@@ -91,14 +91,20 @@ def login_student_post(req):
         user = authenticate(username=username,password=userpass)  
         if user is not None:
             prof = get_profile(req,user.id)
-            if prof.profile == 'student' and prof.status == 'accept':
-                login(req, user)
-                return redirect("student_panel",user.id)
-            elif prof.status == 'pending':
-                login(req, user)
-                return redirect('status_page',user.id)
-            elif prof.status == 'reject':
-                return redirect('home')
+            try:
+                edu  = query.get_education_submit(req,user.id)
+                if edu.verify == 'pending':
+                    login(req, user)
+                    return redirect('status_page',user.id)
+            except:
+                if prof.profile == 'student' and prof.status == 'accept':
+                    login(req, user)
+                    return redirect("student_panel",user.id)
+                elif prof.status == 'pending':
+                    login(req, user)
+                    return redirect('status_page',user.id)
+                elif prof.status == 'reject':
+                    return redirect('home')
         else:
             return redirect('home')
 
@@ -127,7 +133,11 @@ def admin_panel(req,uid):
 @login_required(login_url='/')
 def status_page(req,uid):
     user_data = query.get_user(req,uid)
-    return render(req,'status.html',user_data)
+    edu = query.get_education_submit(req,uid)
+    pro = query.get_profile(req,uid)
+    data = {'user_data' : user_data, 'edu' : edu, 'pro' : pro }
+    return render(req,'status.html',data)
+
 
 @login_required(login_url='/')
 def admin_log_out(req):
@@ -170,7 +180,7 @@ def pending_student(req,uid):
     # Query
     user_data = query.get_user(req,uid)
     prof_data  = get_profile(req,uid)
-    pending_data = query.get_all_pending_student_dada(req,prof_data.dept)
+    pending_data = query.get_all_pending_student_data(req,prof_data.dept)
     # dict
     pending_context = {'uid' : uid}
     pending_context['user_data'] = user_data
@@ -181,8 +191,7 @@ def pending_student(req,uid):
 
 @login_required(login_url='/')
 def add_student_data(req,uid):
-
-    if req.method == 'POST' and req.FILES:
+    if req.method == 'POST':
         f_name = req.POST['f_name']
         l_name = req.POST['l_name']
         email = req.POST['email']
@@ -203,16 +212,49 @@ def add_student_data(req,uid):
         session_end = req.POST['session_end']
 
         date = str(dob)
+        print("hello")
         query.add_student_details(req,uid,father_name, mother_name,gender,address,dept,date)
+        query.upadte_user_details(req,uid,f_name,l_name,email,username)
+        query.add_student_education(req,uid,ten_board,ten_percentage,twelve_board,twelve_percentage,university,gpa,session_start,session_end)
 
-    if req.FILES:
+    if req.FILES and req.method == "POST":
+        # Save personal image
         personal_images = req.FILES['personal_image']
-        # ten_result = req.FILES['ten_result']
-        # twelve_result = req.FILES['twelve_result']
-
-        fs = FileSystemStorage(location='media/')
+        fs = FileSystemStorage(location=f'media/{uid}')
         fs.save(personal_images.name, personal_images)
+        query.add_student_images(req, uid, personal_images.name)
 
-        query.add_student_images(req,uid,personal_images.name)
+    if req.FILES and req.method == "POST":
+        # Save ten result
+        ten_result = req.FILES['ten_result']
+        fs = FileSystemStorage(location=f'media/{uid}')
+        fs.save(ten_result.name, ten_result)
+        query.add_ten_result(req, uid, ten_result.name)
 
-    return redirect('admin_login')
+    if req.FILES and req.method == "POST":
+        # Save twelve result
+        twelve_result = req.FILES['twelve_result']
+        fs = FileSystemStorage(location=f'media/{uid}')
+        fs.save(twelve_result.name, twelve_result)
+        query.add_twelve_result(req, uid, twelve_result.name)
+    
+    return redirect('home')
+
+
+@login_required(login_url='/')
+def pending_student_verification(req,uid):
+    req.session['uid']= uid
+    # Query
+    user_data = query.get_user(req,uid)
+    prof_data  = get_profile(req,uid)
+    pending_data = query.get_all_verify_student_data(req,prof_data.dept)
+    # dict
+    pending_context = {'uid' : uid}
+    pending_context['user_data'] = user_data
+    pending_context['prof_data'] = prof_data
+    pending_context['pending_data'] = pending_data
+    return render(req,'studentVerification.html',pending_context)
+
+
+def addnotice(req):
+    return render(req,'addNotice.html')

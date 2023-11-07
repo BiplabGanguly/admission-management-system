@@ -1,7 +1,7 @@
 from course.models import courses, university, board_ten, board_twelve,session
 from django.contrib.auth.models import User
 from notice.models import notice
-from user.models import profile
+from user.models import profile, educational_details
 
 
 def select_course(req):
@@ -57,7 +57,7 @@ def create_user_student(req,fname,lname,email,username,password,dept,gender):
     return True
 
 
-def get_all_pending_student_dada(req,dept):
+def get_all_pending_student_data(req,dept):
     pending_student_data = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'pending')
     return pending_student_data
 
@@ -98,14 +98,63 @@ def total_dept_student(req,dept):
 
 
 def add_student_details(req,uid,father_name, mother_name,gender,address,dept,date):
-    profile.objects.filter(user_id = uid).update(fathers_name = father_name, 
-                                                 mothers_name = mother_name,
-                                                  gender = gender,
-                                                   address = address,
-                                                    dept = dept,
-                                                     birth_date = date )
+    try:
+        profile.objects.filter(user_id = uid).update(fathers_name = father_name,mothers_name = mother_name,
+                                                     gender = gender,address = address,dept = dept,birth_date = date )
+    except:
+        return False
     return True
 
 def add_student_images(req,uid,image):
-    profile.objects.filter(user_id = uid).update(user_img = image)
+    try:
+        profile.objects.filter(user_id = uid).update(user_img = image)
+    except:
+        return False
     return True
+
+
+def upadte_user_details(req,uid,f_name, l_name, email, username):
+    user = User.objects.get(id = uid)
+    user.first_name = f_name
+    user.last_name = l_name
+    user.email = email
+    user.username = username
+    user.save()
+    return True
+
+
+
+def add_student_education(req,uid,ten_board,ten_percentage,twelve_board,twelve_percentage,university,gpa,session_start,session_end):
+    try:
+        edu = educational_details(user_id = uid,board_ten = ten_board, percentage_ten = ten_percentage,
+                              	board_twelve = twelve_board,percentage_twelve = twelve_percentage,
+                                  university = university,cgpa = gpa, s_start = session_start,
+                                     s_end = session_end,verify = 'pending')
+        edu.save()
+    except:
+        return False
+    return True
+
+
+def add_ten_result(req,uid,image):
+    try:
+        educational_details.objects.filter(user_id = uid).update(ten_result = image)
+    except:
+        return False
+    return True
+
+def add_twelve_result(req,uid,image):
+    try:
+        educational_details.objects.filter(user_id = uid).update(twelve_result = image)
+    except:
+        return False
+    return True
+
+
+def get_education_submit(req,uid):
+    edu = educational_details.objects.get(user_id = uid)
+    return edu
+
+def get_all_verify_student_data(req,dept):
+    pending_student_data = educational_details.objects.select_related('user__profile').filter(verify='pending',user__profile__dept=dept)
+    return pending_student_data

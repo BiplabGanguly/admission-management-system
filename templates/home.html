@@ -83,6 +83,50 @@
     margin: auto;
 }
 
+
+@media (max-width: 768px) {
+      .text-overlay {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      .home-content {
+        width: 100%;
+      }
+
+      .about {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .about-img {
+        margin: 3rem 0;
+      }
+
+      .about-img img {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .about-content {
+        width: 100%;
+      }
+
+      .notice {
+        height: auto;
+      }
+
+      .carousel-item {
+        text-align: center;
+      }
+
+      .textbox {
+        max-width: 100%;
+      }
+    }
+
 </style>
 <section class="home" id="home">
 
@@ -151,3 +195,5 @@
     </div>
   </section>
 {%endblock%}
+
+

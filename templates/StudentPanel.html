@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>BCREC</title>
 </head>
 
 <body>
@@ -174,24 +174,24 @@
                     <input type="text" placeholder="email" name="email" value="{{user_data.data.email}}">
                 </div>
                 <div class="input-box">
-                    <input type="text" name="dept" value="{{prof_data.dept}}">
+                    <input readonly name="dept" value="{{prof_data.dept}}">
                 </div>
             </div>
             <div class="part">
                 <div class="input-box">
                     <select class="select-box" aria-label="Default select example" name="gender">
                         {% if prof_data.gender == 'male' %}
-                        <option selected>{{prof_data.gender}}</option>
+                        <option value="{{prof_data.gender}}" selected>{{prof_data.gender}}</option>
                         <option value="female">female</option>
                         <option value="others">others</option>
                         {% elif prof_data.gender == 'female' %}
-                        <option selected>{{prof_data.gender}}</option>
-                        <option value="female">male</option>
+                        <option value="{{prof_data.gender}}" selected>{{prof_data.gender}}</option>
+                        <option value="male">male</option>
                         <option value="others">others</option>
                         {%else%}
-                        <option selected>{{prof_data.gender}}</option>
-                        <option value="female">male</option>
-                        <option value="others">female</option>
+                        <option value="{{prof_data.gender}}" selected>{{prof_data.gender}}</option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
                         {%endif%}
                     </select>
                 </div>

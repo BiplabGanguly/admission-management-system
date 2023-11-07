@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'notice',
     'course',
     'user',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -122,10 +123,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 MEDIA_ROOT  = BASE_DIR/"media/" 
@@ -136,3 +138,15 @@ MEDIA_URL  = 'media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+TINYMCE_JS_URL = 'tinymce/tinymce.min.js'
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 800,
+    'menubar': True,
+    'plugins': 'advlist autolink lists link image charmap print preview anchor',
+    'toolbar': 'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | \
+                bullist numlist outdent indent | removeformat | link | image',
+}

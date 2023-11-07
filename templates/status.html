@@ -65,8 +65,13 @@
         <div class="text">
             <h2>Status</h2>
             <hr>
-            <p>{{data.first_name}} {{data.last_name}}</p>
+            <p>{{user_data.data.first_name}} {{user_data.data.last_name}}</p>
             <h1>Pending</h1>
+            {%if pro.status == 'pending'%}
+            <p>Status pending</p>
+            {% elif edu.verify == 'pending' %}
+            <p>application pending</p>
+            {%endif%}
         </div>
         <div class="backbtn">
             <form action="{% url 'admin_logout'%}" method="post">
@@ -78,13 +83,3 @@
 </body>
 
 </html>
-
-<!-- <center>
-<h1>
-    pending
-</h1>
-<form action="{% url 'admin_logout'%}" method="post">
-    {%csrf_token%}
-    <button type="submit">Back to Home</button>
-</form>
-</center> -->

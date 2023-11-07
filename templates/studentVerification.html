@@ -1,0 +1,101 @@
+{% extends 'adminStyle.html' %}
+{%block partial %}
+<style>
+  .table {
+    width: 960px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    padding: 30px 40px;
+    margin-top: 2.8rem;
+    text-align: center;
+    margin-left: 6rem;
+  }
+
+  .table tbody tr {
+    text-align: center;
+    height: 50px;
+    width: 100%;
+  }
+
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  td,
+  th {
+    width: 290px;
+  }
+
+  .table tbody tr td {
+    padding: 0 30px 0 50px;
+  }
+
+  .tblbtn {
+    height: 40px;
+  }
+</style>
+<!-- partial:partials/_sidebar.html -->
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{%url 'admin' uid %}">
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'pending_student' uid %}">
+        <span class="menu-title">Pending info</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'pending_student_verification' uid %}">
+        <span class="menu-title">Student Verification</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">Student Info</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">Add Notice</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<!-- Table -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col"><b>NAME</b></th>
+          <th scope="col"><b>EMAIL</b></th>
+          <th scope="col"><b>DEPARTMENT</b></th>
+          <th scope="col"><b>DETAILS</b></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in pending_data%}
+        <tr>
+          <td>{{data.user.first_name}} {{data.user.last_name}}</td>
+          <td>{{data.user.email}}</td>
+          <td>{{prof_data.dept}}</td>
+          <td>
+            <form action="{%url 'accept_student' data.user_id %}" method="post">
+              {%csrf_token%}
+              <button type="submit" class="btn btn-outline-success">view</button>
+            </form>
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+
+    </table>
+  </div>
+</div>
+{%endblock%}

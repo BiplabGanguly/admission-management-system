@@ -12,7 +12,7 @@ class profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fathers_name = models.CharField(max_length=255, blank=True)
     mothers_name = models.CharField(max_length=255, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
+    birth_date = models.CharField(max_length=255, blank=True)
     gender = models.CharField(max_length=255, blank=True)
     address = models.TextField(blank=True)
     dept = models.CharField(max_length=255, blank=True)
@@ -25,7 +25,9 @@ class profile(models.Model):
 
 
 class educational_details(models.Model):
-    verify_choice = [('true', 'true'), ('false', 'false')]
+    verify_choice = [('pending', 'pending'),
+                     ('accept', 'accept'),
+                     ('reject', 'reject'),]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     board_ten = models.CharField(max_length=255, blank=True)
@@ -40,3 +42,6 @@ class educational_details(models.Model):
     s_end = models.CharField(max_length=255, blank=True)
     verify = models.CharField(
         max_length=255, default='false', choices=verify_choice)
+
+    def __str__(self) -> str:
+        return self.user.first_name
