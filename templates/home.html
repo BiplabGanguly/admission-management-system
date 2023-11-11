@@ -176,24 +176,6 @@
     </div>
   </section>
 
-  <section class="notice">
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <p>Empowering Minds, Inspiring Futures: Learn Today, Lead Tomorrow.</p>
-          <h3>BCREC</h3>
-        </div>
-        {% for i in data%}
-        <div class="carousel-item">
-          <div class="textbox">
-            <p>{{i.notice}}</p>
-            <h3>{{i.dept}}</h3>
-          </div>
-        </div>
-        {%endfor%}
-      </div>
-    </div>
-  </section>
 {%endblock%}
 
 

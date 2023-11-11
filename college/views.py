@@ -6,8 +6,11 @@ from college import query
 from django.core.files.storage import FileSystemStorage
 
 def home(req):
+    return render(req,"home.html")
+
+def article(req):
     dt = query.get_all_notice(req)
-    return render(req,"home.html",dt)
+    return render(req,'notice.html',dt)
 
 def course(req):
     return render(req,'courses.html')
@@ -55,10 +58,10 @@ def login_admin_post(req):
             if prof.profile == 'admin' and prof.status == 'accept':
                 login(req, user)
                 return redirect("admin",user.id)
-            elif prof.status == 'pending':
+            elif prof.status == 'pending'and prof.profile == 'admin':
                 login(req, user)
                 return redirect('status_page',user.id)
-            elif prof.status == 'reject':
+            elif prof.status == 'reject' and prof.profile == 'admin':
                 return redirect('home')
         else:
             return redirect('home')
@@ -93,17 +96,22 @@ def login_student_post(req):
             prof = get_profile(req,user.id)
             try:
                 edu  = query.get_education_submit(req,user.id)
-                if edu.verify == 'pending':
+                if edu.verify == 'pending' and prof.status == 'accept' and prof.profile == 'student':
                     login(req, user)
                     return redirect('status_page',user.id)
+                elif edu.verify == 'accept' and prof.status == 'accept' and prof.profile == 'student':
+                    login(req, user)
+                    return redirect('accept',user.id)
+                elif edu.verify == 'reject' and prof.status == 'reject' and prof.profile == 'student':
+                    return redirect('home')
             except:
                 if prof.profile == 'student' and prof.status == 'accept':
                     login(req, user)
                     return redirect("student_panel",user.id)
-                elif prof.status == 'pending':
+                elif prof.status == 'pending' and prof.profile == 'student':
                     login(req, user)
                     return redirect('status_page',user.id)
-                elif prof.status == 'reject':
+                elif prof.status == 'reject'and prof.profile == 'student':
                     return redirect('home')
         else:
             return redirect('home')
@@ -121,12 +129,16 @@ def admin_panel(req,uid):
     count_dept = query.count_dept(req)
     total_student = query.total_student(req)
     total_dept_student = query.total_dept_student(req,prof_data.dept)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
 
     # dict
     context = {'user_data' : user_data, 'prof_data' : prof_data,'all_admin':all_admin}
     context['count_dept'] = count_dept
     context['total_student'] = total_student
     context['total_dept_student'] = total_dept_student
+    context['count_pending_student'] = count_pending_student
+    context['pending_verify_info'] = pending_verify_info
     return render(req,'adminpanel.html',context)
 
 
@@ -181,11 +193,15 @@ def pending_student(req,uid):
     user_data = query.get_user(req,uid)
     prof_data  = get_profile(req,uid)
     pending_data = query.get_all_pending_student_data(req,prof_data.dept)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
     # dict
     pending_context = {'uid' : uid}
     pending_context['user_data'] = user_data
     pending_context['prof_data'] = prof_data
     pending_context['pending_data'] = pending_data
+    pending_context['count_pending_student'] = count_pending_student
+    pending_context['pending_verify_info'] = pending_verify_info
     return render(req,'PendingStudent.html',pending_context)
 
 
@@ -248,13 +264,106 @@ def pending_student_verification(req,uid):
     user_data = query.get_user(req,uid)
     prof_data  = get_profile(req,uid)
     pending_data = query.get_all_verify_student_data(req,prof_data.dept)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
     # dict
     pending_context = {'uid' : uid}
     pending_context['user_data'] = user_data
     pending_context['prof_data'] = prof_data
     pending_context['pending_data'] = pending_data
+    pending_context['count_pending_student'] = count_pending_student
+    pending_context['pending_verify_info'] = pending_verify_info
     return render(req,'studentVerification.html',pending_context)
 
 
-def addnotice(req):
-    return render(req,'addNotice.html')
+@login_required(login_url='/')
+def all_student_details(req,sid):
+    uid = req.session['uid']
+    user_data = query.get_user(req,uid)
+    prof_data  = get_profile(req,uid)
+
+    user_student = query.get_user(req,sid)
+    edu = query.get_education_submit(req,sid)
+    pro = query.get_profile(req,sid)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
+
+    pending_context = {'uid' : uid}
+    pending_context['user_data'] = user_data
+    pending_context['prof_data'] = prof_data
+    pending_context['user_student'] = user_student
+    pending_context['edu'] = edu
+    pending_context['pro'] = pro
+    pending_context['count_pending_student'] = count_pending_student
+    pending_context['pending_verify_info'] = pending_verify_info
+    return render(req,'studentDetailsView.html',pending_context)
+
+
+@login_required(login_url='/')
+def accept_verify_student(req,sid):
+    uid = req.session['uid']
+    query.accept_verify_student(req,sid)
+    return redirect('pending_student_verification',uid)
+
+
+@login_required(login_url='/')
+def reject_verify_student(req,sid):
+    uid = req.session['uid']
+    query.reject_verify_student(req,sid)
+    return redirect('pending_student_verification',uid)
+
+
+@login_required(login_url='/')
+def all_stuent_list(req,uid):
+    # Query
+    user_data = query.get_user(req,uid)
+    prof_data  = get_profile(req,uid)
+    all_data = query.get_all_dept_student(req,prof_data.dept)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
+    # dict
+    all_context = {'uid' : uid}
+    all_context['user_data'] = user_data
+    all_context['prof_data'] = prof_data
+    all_context['all_data'] = all_data
+    all_context['count_pending_student'] = count_pending_student
+    all_context['pending_verify_info'] = pending_verify_info
+    return render(req,'allStudentList.html',all_context)
+
+
+@login_required(login_url='/')
+def block_student(req,sid):
+    uid = req.session['uid']
+    query.update_student_reject(req,sid)
+    query.reject_verify_student(req,sid)
+    return redirect('pending_student_verification',uid)
+
+
+@login_required(login_url='/')
+def admission_complete(req,sid):
+    user_data = query.get_user(req,sid)
+    context = {'user_data' : user_data}
+    return render(req,'accept.html',context)
+
+
+@login_required(login_url='/')
+def addnotice(req,uid):
+    user_data = query.get_user(req,uid)
+    prof_data  = get_profile(req,uid)
+    count_pending_student = query.pending_info(req,prof_data.dept)
+    pending_verify_info = query.pending_verify_info(req,prof_data.dept)
+
+    pending_context = {'uid' : uid}
+    pending_context['user_data'] = user_data
+    pending_context['prof_data'] = prof_data
+    pending_context['count_pending_student'] = count_pending_student
+    pending_context['pending_verify_info'] = pending_verify_info
+    return render(req,'addNotice.html',pending_context)
+
+def publish_notice(req,uid):
+    if req.method == 'POST':
+        notice = req.POST['notice']
+        prof_data  = get_profile(req,uid)
+        query.add_notice(req,notice,prof_data.dept) 
+        return redirect('add_notice',uid)
+

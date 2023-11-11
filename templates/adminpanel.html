@@ -19,12 +19,12 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="{% url 'all_stuent_list' user_data.data.id %}">
         <span class="menu-title">Student Info</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="{% url 'add_notice' user_data.data.id %}">
         <span class="menu-title">Add Notice</span>
       </a>
     </li>
@@ -89,7 +89,7 @@
                   <tr>
                     <th> Admin </th>
                     <th> Emails </th>
-                    <th> Status </th>
+                    <th> Department </th>
                     <th> Admin ID </th>
                   </tr>
                 </thead>
@@ -98,7 +98,7 @@
                   <tr>
                     <td>{{data.user.first_name}} {{data.user.last_name}}</td>
                     <td>{{data.user.email}}</td>
-                    <td>{{data.status}}</td>
+                    <td>{{data.dept}}</td>
                     <td>KW-12390{{data.user_id}}</td>
                   </tr>
                   {%endfor%}

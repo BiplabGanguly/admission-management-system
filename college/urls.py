@@ -40,7 +40,15 @@ urlpatterns = [
     path('pending_student/<uid>/',views.pending_student,name='pending_student'),
     path('add_student_data/<uid>/',views.add_student_data,name="add_student_data"),
     path('pending_student_verification/<uid>/',views.pending_student_verification,name="pending_student_verification"),
-    path('notice/',views.addnotice),
+    path('all_student_details/<sid>/',views.all_student_details,name="all_student_details"),
+    path('accept_verify_student/<sid>/',views.accept_verify_student,name = "accept_verify_student"),
+    path('reject_verify_student/<sid>/',views.reject_verify_student,name = 'reject_verify_student'),
+    path('all_stuent_list/<uid>/',views.all_stuent_list,name = "all_stuent_list"),
+    path('block_student/<sid>/',views.block_student,name = 'block_student'),
+    path('accept/<sid>/',views.admission_complete,name = "accept"),
+    path('add_notice/<uid>/',views.addnotice,name = "add_notice"),
+    path('publish_notice/<uid>/',views.publish_notice,name='publish_notice'),
+    path('notice/',views.article,name='notice'),
 ]
 
 if settings.DEBUG:

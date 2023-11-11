@@ -56,9 +56,9 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'all_stuent_list' uid %}">
-        <span class="menu-title">Student Info</span>
-      </a>
+        <a class="nav-link" href="{% url 'all_stuent_list' uid %}">
+            <span class="menu-title">Student Info</span>
+          </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'add_notice' uid %}">
@@ -70,7 +70,7 @@
 <!-- Table -->
 <div class="main-panel">
   <div class="content-wrapper">
-    <table class="table table-striped" id="myTable">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col"><b>NAME</b></th>
@@ -80,9 +80,10 @@
         </tr>
       </thead>
       <tbody>
-        {% for data in pending_data%}
+        {% for data in all_data%}
         <tr>
-          <td>{{data.user.first_name}} {{data.user.last_name}}</td>
+          <td><img src="/media/{{data.user.id}}/{{data.user.profile.user_img}}" alt="" style="width: 40px; height: 40px;">
+          {{data.user.first_name}} {{data.user.last_name}}</td>
           <td>{{data.user.email}}</td>
           <td>{{data.user.profile.dept}}</td>
           <td>
@@ -98,5 +99,4 @@
     </table>
   </div>
 </div>
-
 {%endblock%}

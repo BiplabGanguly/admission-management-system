@@ -1,0 +1,50 @@
+{%extends 'temp.html'%}
+{%block content%}
+<style>
+.courses{
+    background-color:#616A6B;
+}
+
+.courses .dept_main{
+    background-color: #616A6B;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.courses .dept_sec{
+    background-color: var(--second-bg-color);
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+.about-content{
+    width: 80%;
+}
+
+
+</style>
+<br><br>
+  {% for i in data%}
+  <section class="courses">
+    {% if i.id|divisibleby:2 %}
+        <div class="dept_main">
+    {% else %}
+        <div class="dept_sec">
+    {% endif %}
+            <div class="about-content">
+                <h2 class="heading"><span style="color:#99A3A4;"> {{ i.dept }}</span></h2>
+                <div class="text">{{ i.notice|safe }}</div>
+            </div>
+        </div>
+</section>
+    {%endfor%}
+{%endblock%}

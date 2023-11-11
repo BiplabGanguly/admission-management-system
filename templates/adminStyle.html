@@ -13926,8 +13926,23 @@ code {
         </div>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
-              <div class="nav-profile-text">
-                <p class="mb-1 text-black">Mr. {{user_data.data.first_name}}</p>
+            <div class="nav-profile-text">
+              <p class="mb-1 text-black">Pending Info <input readonly  value="{{count_pending_student}}" style="width: 40px; text-align: center;"></p>
+            </div>
+        </li>
+          <li class="nav-item nav-profile dropdown">
+            <div class="nav-profile-text" style="margin-left: 30px;">
+              <p class="mb-1 text-black" >verify Student <input readonly value="{{pending_verify_info}}" style="width: 40px; text-align: center;"></p>
+            </div>
+        </li>
+          <li class="nav-item nav-profile dropdown">
+            <div class="nav-profile-text" style="margin-left: 30px;">
+              <p class="mb-1 text-black">Mr. {{user_data.data.first_name}}</p>
+            </div>
+        </li>
+          <li class="nav-item nav-profile dropdown">
+              <div class="nav-profile-text" style="margin-left: 30px;">
+                <p class="mb-1 text-black">{{user_data.data.first_name}}</p>
               </div>
           </li>
           <li class="nav-item nav-profile dropdown">

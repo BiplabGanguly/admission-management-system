@@ -5,37 +5,63 @@ from user.models import profile, educational_details
 
 
 def select_course(req):
-    all_courses = courses.objects.all()
-    course_context = {'course':all_courses}
-    return course_context
-
+    try:
+        all_courses = courses.objects.all()
+        course_context = {'course':all_courses}
+        return course_context
+    except:
+        return False
 
 def get_user(req,uid):
-    get_user_data = User.objects.get(id = uid)
-    user_data = {'data' : get_user_data}
-    return user_data
+    try:
+        get_user_data = User.objects.get(id = uid)
+        user_data = {'data' : get_user_data}
+        return user_data
+    except:
+        return False
+
 
 def get_all_notice(req):
-    notices = notice.objects.all()
-    all_notice = {'data' : notices}
-    return all_notice
+    try:
+        notices = notice.objects.all()
+        all_notice = {'data' : notices}
+        return all_notice
+    except:
+        return False
+    
+
+def add_notice(req,notices,dept):
+    try:
+        note = notice(notice = notices, dept = dept)
+        note.save()
+        return True
+    except:
+        return False
+
+    
 
 def get_all_course_model(req):
-    universitys = university.objects.all()
-    boardten = board_ten.objects.all()
-    boardtwelve = board_twelve.objects.all()
-    sess = session.objects.all()
-    data = {'universitys' :universitys,
-            'boardten' : boardten,
-            'boardtwelve' : boardtwelve,
-            'year' : sess
-             }
-    return data
+    try:
+        universitys = university.objects.all()
+        boardten = board_ten.objects.all()
+        boardtwelve = board_twelve.objects.all()
+        sess = session.objects.all()
+        data = {'universitys' :universitys,
+                'boardten' : boardten,
+                'boardtwelve' : boardtwelve,
+                'year' : sess
+                }
+        return data
+    except:
+        return False
 
 
 def get_profile(req,uid):
-    prof = profile.objects.get(user_id = uid)
-    return prof
+    try:
+        prof = profile.objects.get(user_id = uid)
+        return prof
+    except:
+        return False
 
 def create_user_admin(req,fname,lname,email,username,password,dept):
     try:
@@ -58,8 +84,11 @@ def create_user_student(req,fname,lname,email,username,password,dept,gender):
 
 
 def get_all_pending_student_data(req,dept):
-    pending_student_data = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'pending')
-    return pending_student_data
+    try:
+        pending_student_data = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'pending')
+        return pending_student_data
+    except:
+        return False
 
 
 def update_student_accept(req,sid):
@@ -78,23 +107,35 @@ def update_student_reject(req,sid):
     return True
 
 def get_all_admin_data(req):
-    all_admin_data = profile.objects.select_related('user').filter(profile = 'admin').filter(status = 'accept')
-    return all_admin_data
+    try:
+        all_admin_data = profile.objects.select_related('user').filter(profile = 'admin').filter(status = 'accept')
+        return all_admin_data
+    except:
+        return False
 
 
 def count_dept(req):
-    count_dept = courses.objects.all().count()
-    return count_dept
+    try:
+        count_dept = courses.objects.all().count()
+        return count_dept
+    except:
+        return False
 
 
 def total_student(req):
-    total_student = profile.objects.select_related('user').filter(profile = 'student').filter(status = 'accept').count()
-    return total_student
+    try:
+        total_student = educational_details.objects.select_related('user__profile').filter(verify='accept',user__profile__profile='student').count()
+        return total_student
+    except:
+        return False
 
 
 def total_dept_student(req,dept):
-    total_dept_student = profile.objects.select_related('user').filter(dept = dept).filter(profile = 'student').filter(status = 'accept').count()
-    return total_dept_student
+    try:
+        total_dept_student = educational_details.objects.select_related('user__profile').filter(verify='accept',user__profile__dept=dept,user__profile__profile='student').count()
+        return total_dept_student
+    except:
+        return False
 
 
 def add_student_details(req,uid,father_name, mother_name,gender,address,dept,date):
@@ -114,13 +155,16 @@ def add_student_images(req,uid,image):
 
 
 def upadte_user_details(req,uid,f_name, l_name, email, username):
-    user = User.objects.get(id = uid)
-    user.first_name = f_name
-    user.last_name = l_name
-    user.email = email
-    user.username = username
-    user.save()
-    return True
+    try:
+        user = User.objects.get(id = uid)
+        user.first_name = f_name
+        user.last_name = l_name
+        user.email = email
+        user.username = username
+        user.save()
+        return True
+    except:
+        return False
 
 
 
@@ -152,9 +196,54 @@ def add_twelve_result(req,uid,image):
 
 
 def get_education_submit(req,uid):
-    edu = educational_details.objects.get(user_id = uid)
-    return edu
+    try:
+        edu = educational_details.objects.get(user_id = uid)
+        return edu
+    except: 
+        return False
 
 def get_all_verify_student_data(req,dept):
-    pending_student_data = educational_details.objects.select_related('user__profile').filter(verify='pending',user__profile__dept=dept)
-    return pending_student_data
+    try:
+        pending_student_data = educational_details.objects.select_related('user__profile').filter(verify='pending',user__profile__dept=dept,user__profile__status = 'accept')
+        return pending_student_data
+    except:
+        return False
+
+def accept_verify_student(req,sid):
+    try:
+        educational_details.objects.filter(user_id = sid).update(verify = 'accept')
+        return True
+    except:
+        return False
+
+def reject_verify_student(req,sid):
+    try:
+        educational_details.objects.filter(user_id = sid).update(verify = 'reject')
+        return True
+    except:
+        return False
+
+
+def get_all_dept_student(req,dept):
+    try:
+        all_student_data = educational_details.objects.select_related('user__profile').filter(verify='accept',user__profile__dept=dept,user__profile__status = 'accept')
+        return all_student_data
+    except:
+        return False
+    
+
+def pending_info(req,dept):
+    try:
+        count_prof = profile.objects.filter(dept = dept, status = 'pending').count()
+        return count_prof
+    except:
+        return False
+    
+def pending_verify_info(req,dept):
+    try:
+        count_verify_info = educational_details.objects.select_related('user__profile').filter(verify = 'pending', user__profile__dept = dept).count()
+        return count_verify_info
+    except:
+        return False
+
+
