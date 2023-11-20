@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>BCREC</title>
 </head>
 
@@ -130,7 +131,7 @@
             color: black;
         }
 
-        .input-box .filedata{
+        .input-box .filedata {
             width: 745px;
         }
 
@@ -157,7 +158,7 @@
         <h1>Register Mr. <span style="color: #99A3A4;">{{user_data.data.first_name}}</span></h1>
     </div>
 
-    <form action="{% url 'add_student_data' user_data.data.id %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'add_student_data' user_data.data.id %}" method="post" enctype="multipart/form-data" id="Registration">
         {%csrf_token%}
         <h2>Personal <span style="color: #99A3A4;">Details</span></h2>
         <div class="wrapper">
@@ -212,7 +213,7 @@
             </div>
             <div class="part">
                 <div class="input-box">
-                    <input class="inputfile" type="file" name="personal_image">
+                    <input class="inputfile" type="file" name="personal_image" accept="image/*">
                 </div>
                 <div class="input-box">
                     <input type="date" name="dob">
@@ -243,7 +244,7 @@
             </div>
             <div class="part">
                 <div class="input-box">
-                    <input type="file" name="ten_result" class="filedata" >
+                    <input type="file" name="ten_result" class="filedata" accept=".pdf, image/*">
                 </div>
             </div>
         </div>
@@ -264,7 +265,7 @@
             </div>
             <div class="part">
                 <div class="input-box">
-                    <input type="file" placeholder="email" name="twelve_result" class="filedata">
+                    <input type="file" placeholder="email" name="twelve_result" class="filedata" accept=".pdf, image/*">
                 </div>
             </div>
         </div>
@@ -315,6 +316,121 @@
             </div>
         </div>
     </form>
-</body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('Registration');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (validateForm()) {
+                Swal.fire({
+                    title: 'Submit Form',
+                    text: 'Are you sure you want to submit the form?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, submit it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+
+        form.querySelector('.btn1[type="reset"]').addEventListener('click', function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Reset Form',
+                text: 'Are you sure you want to refresh the form?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, refresh it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.reset();
+                }
+            });
+        });
+
+
+        function validateForm() {
+            var f_name = document.querySelector('input[name="f_name"]').value;
+            var l_name = document.querySelector('input[name="l_name"]').value;
+            var email = document.querySelector('input[name="email"]').value;
+            var gender = document.querySelector('select[name="gender"]').value;
+            var username = document.querySelector('input[name="username"]').value;
+            var father_name = document.querySelector('input[name="father_name"]').value;
+            var mother_name = document.querySelector('input[name="mother_name"]').value;
+            var personal_image = document.querySelector('input[name="personal_image"]');
+            var dob = document.querySelector('input[name="dob"]').value;
+            var address = document.querySelector('input[name="address"]').value;
+            var ten_board = document.querySelector('select[name="ten_board"]').value;
+            var ten_percentage = document.querySelector('input[name="ten_percentage"]').value;
+            var ten_result = document.querySelector('input[name="ten_result"]');
+            var twelve_board = document.querySelector('select[name="twelve_board"]').value;
+            var twelve_percentage = document.querySelector('input[name="twelve_percentage"]').value;
+            var twelve_result = document.querySelector('input[name="twelve_result"]');
+            var university = document.querySelector('select[name="university"]').value;
+            var gpa = document.querySelector('input[name="gpa"]').value;
+            var session_start = document.querySelector('select[name="session_start"]').value;
+            var session_end = document.querySelector('select[name="session_end"]').value;
+
+            // Check for null values
+            if (
+                f_name === '' || l_name === '' || email === '' || gender === 'Select Gender' ||
+                username === '' || father_name === '' || mother_name === '' || personal_image.files.length === 0 ||
+                dob === '' || address === '' || ten_board === 'select 10th Board' || ten_percentage === '' ||
+                ten_result.files.length === 0 || twelve_board === 'select 12th Board' || twelve_percentage === '' ||
+                twelve_result.files.length === 0 || university === 'select University' || gpa === '' ||
+                session_start === 'session Start' || session_end === 'session End'
+            ) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'All fields are required',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Invalid email address',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // File size validation for personal_image (less than 5 MB)
+            if (personal_image.files[0].size > 5 * 1024 * 1024) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Personal image size should be less than 5 MB',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            if (parseInt(ten_percentage) > 100 || parseInt(twelve_percentage) > 100 || parseFloat(gpa) > 10) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Percentage or GPA value exceeds the allowed limit',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+            return true;
+        }
+    });
+</script>
+     
+</body>
 </html>

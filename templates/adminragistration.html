@@ -61,7 +61,7 @@
             margin: -15px 0 15px;
         }
 
-        .remember-forgot label{
+        .remember-forgot label {
             margin-left: 30px;
             margin-top: 30px;
         }
@@ -149,7 +149,7 @@
             </div>
 
             <div class="remember-forgot">
-                <label><input type="checkbox" checked>Remember me</label>
+                <label><input type="checkbox">Terms & Conditions</label>
             </div>
 
             <div class="part">
@@ -159,4 +159,112 @@
         </form>
     </div>
 </section>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            if (validateForm()) {
+                Swal.fire({
+                    title: 'Submit Form',
+                    text: 'Are you sure you want to submit the form?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, submit it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+
+
+        form.querySelector('.btn[type="reset"]').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // Show a confirmation alert for resetting the form
+            Swal.fire({
+                title: 'Reset Form',
+                text: 'Are you sure you want to reset the form?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, reset it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.reset();
+                }
+            });
+        });
+
+        function validateForm() {
+            var firstName = document.querySelector('input[name="f_name"]').value;
+            var lastName = document.querySelector('input[name="l_name"]').value;
+            var email = document.querySelector('input[name="email"]').value;
+            var department = document.querySelector('select[name="dept"]').value;
+            var username = document.querySelector('input[name="username"]').value;
+            var password = document.querySelector('input[name="password"]').value;
+            var confirmPassword = document.querySelector('input[name="c_password"]').value;
+
+            if (firstName === '' || lastName === '' || email === '' || department === '' || username === '' || password === '' || confirmPassword === '') {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'All fields are required',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Invalid email address',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Password and Confirm Password do not match',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            var checkbox = document.querySelector('input[type="checkbox"]');
+            if (!checkbox.checked) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Please agree to the terms and conditions',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+            return true;
+        }
+    });
+</script>
 {%endblock%}

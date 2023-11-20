@@ -36,6 +36,66 @@
   .tblbtn {
     height: 40px;
   }
+
+  .personalinfo {
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: Garamond, serif;
+    margin-top: 20px;
+    margin-left: 40px;
+  }
+
+  .personalinfo .header h2 {
+    font-family: Garamond, serif;
+    font-size: 40px;
+  }
+
+  .personalimg {
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    right: 330px;
+    border-radius: 20px;
+  }
+
+  .personalinfo label {
+    font-size: 22px;
+    margin-bottom: 28px;
+  }
+
+  .education {
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: Garamond, serif;
+    margin-top: 20px;
+    margin-left: 40px;
+  }
+
+  .education h2 {
+    font-family: Garamond, serif;
+    font-size: 40px;
+  }
+
+  .education label {
+    font-size: 22px;
+    margin-bottom: 28px;
+  }
+
+  .session {
+    margin-top: 20px;
+    margin-left: 40px;
+  }
+
+  .sub {
+    margin-top: 20px;
+    margin-left: 40px;
+  }
 </style>
 <!-- partial:partials/_sidebar.html -->
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -68,55 +128,93 @@
   </ul>
 </nav>
 <!-- Table -->
-<div class="main-panel">
-    <div class="detailbox">
+<div class="main-panel" style="background-color: #f2edf3;">
+  <div class="detailbox">
+    <div class="personalinfo">
+      <div class="header">
         <h2>Personal Details</h2>
-        <label>Name </label>  {{user_student.data.first_name}} {{user_student.data.last_name}}<br>
-        <label>Email</label> {{user_student.data.email}}<br>
-        <img src="/media/{{user_student.data.id}}/{{pro.user_img}}" alt="" style="width: 120px; height: 120px;"><br>
-        <label>Gender</label> {{pro.gender}}<br>
-        <label>Department</label> {{pro.dept}}<br>
-        <label>Father's Name</label> {{pro.fathers_name}}<br>
-        <label>Mother's Name</label> {{pro.mothers_name}}<br>
-        <label>Birth Date </label> {{pro.birth_date}}<br>
-        <label>Address</label> {{pro.address}}<br>
-        <br>
-        <h2>Education Details</h2><br>
-        <label>10th Board</label> {{edu.board_ten}}<br>
-        <label>10th percentage</label> {{edu.percentage_ten}}<br>
-        <img src="/media/{{user_student.data.id}}/{{edu.ten_result}}" alt="" style="width: 120px; height: 120px;"><br>
-        <a href="/media/{{ user_student.data.id }}/{{ edu.ten_result }}" download>
-            <button>Download Image</button>
-        </a><br><br>
-        <label>12th Board</label> {{edu.board_twelve}}<br>
-        <label>12th percentage</label> {{edu.percentage_twelve}}<br>
-        <img src="/media/{{user_student.data.id}}/{{edu.twelve_result}}" alt="" style="width: 120px; height: 120px;"><br>
-        <a href="/media/{{ user_student.data.id }}/{{ edu.twelve_result }}" download>
-            <button>Download Image</button>
-        </a><br><br>
-        <label>University</label> {{edu.university}}<br>
-        <label>CGPA</label> {{edu.cgpa}}<br><br>
-
-        <label>Session Start</label>{{edu.s_start}}<br>
-        <label>Session End</label>{{edu.s_end}}
-
-        <br>
-        {% if edu.verify == 'pending' %}
-        <form action="{% url 'reject_verify_student' user_student.data.id %}" method="post">
-          {%csrf_token%}
-          <button type="submit">Reject</button>
-        </form>
-        <form action="{% url 'accept_verify_student' user_student.data.id %}" method="post">
-          {%csrf_token%}
-          <button type="submit">Accept</button>
-        </form>
-        {% else %}
-        <form action="{% url 'block_student' user_student.data.id %}" method="post">
-          {%csrf_token%}
-          <button type="submit">Block</button>
-        </form>
-        {%endif%}
-      
+      </div>
+      <label>Name </label> - {{user_student.data.first_name}} {{user_student.data.last_name}}
+      <label style="margin-left: 300px;">Email</label> - {{user_student.data.email}}
+      <img src="/media/{{user_student.data.id}}/{{pro.user_img}}" alt="" class="personalimg"><br>
+      <label>Gender</label> - {{pro.gender}}
+      <label style="margin-left: 324px;">Department</label> - {{pro.dept}}<br>
+      <label>Father's Name</label> - {{pro.fathers_name}}
+      <label style="margin-left: 226px;">Mother's Name</label> - {{pro.mothers_name}}<br>
+      <label>Birth Date </label> - {{pro.birth_date}}<br>
+      <label style="margin-left: 160px;">Address</label> - {{pro.address}}
     </div>
+    <div class="education">
+      <h2>Education Details</h2><br>
+      <label>10th Board</label> - {{edu.board_ten}}
+      <label style="margin-left: 300px;">10th percentage</label> - {{edu.percentage_ten}}<br>
+      <img src="/media/{{user_student.data.id}}/{{edu.ten_result}}" alt=""
+        style="width: 180px; height: 180px; border-radius: 20px;" class="img"><br>
+      <a href="/media/{{ user_student.data.id }}/{{ edu.ten_result }}" download>
+        <button class="btn btn-outline-success"
+          style="margin-top: 5px; width: 180px; border-radius: 20px;">Download</button>
+      </a><br><br>
+      <label>12th Board</label> - {{edu.board_twelve}}
+      <label style="margin-left: 300px;">12th percentage</label> - {{edu.percentage_twelve}}<br>
+      <img src="/media/{{user_student.data.id}}/{{edu.twelve_result}}" alt=""
+        style="width: 180px; height: 180px; border-radius: 20px;" class="img"><br>
+      <a href="/media/{{ user_student.data.id }}/{{ edu.twelve_result }}" download>
+        <button class="btn btn-outline-success"
+          style="margin-top: 5px; width: 180px; border-radius: 20px;">Download</button>
+      </a><br><br>
+      <label>University</label> - {{edu.university}}
+      <label style="margin-left: 300px;">CGPA</label> - {{edu.cgpa}}<br><br>
+    </div>
+
+    <div class="session">
+      <label>Session Start</label> - {{edu.s_start}}
+      <label style="margin-left: 300px;">Session End</label> - {{edu.s_end}}
+    </div>
+
+
+    <br>
+    {% if edu.verify == 'pending' %}
+    <div class="subbtn" style="display: flex; margin-bottom: 30px;">
+      <form action="{% url 'accept_verify_student' user_student.data.id %}" method="post"
+        onsubmit="handleConfirmation('Accept', this); return false;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary sub">Accept</button>
+      </form>
+      <form action="{% url 'reject_verify_student' user_student.data.id %}" method="post"
+        onsubmit="handleConfirmation('Reject', this); return false;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger sub">Reject</button>
+      </form>
+    </div>
+    {% else %}
+    <form action="{% url 'block_student' user_student.data.id %}" method="post"
+      onsubmit="handleConfirmation('Block', this); return false;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger sub" style="margin-bottom: 20px;">Block
+        {{user_student.data.first_name}}</button>
+    </form>
+    {% endif %}
+
+
+
+  </div>
 </div>
+
+<script>
+  // Function to handle the SweetAlert confirmation
+  function handleConfirmation(action, form) {
+    Swal.fire({
+      title: 'Confirm Action',
+      text: `Are you sure you want to ${action.toLowerCase()} this student?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: `Yes, ${action.toLowerCase()} it!`,
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit();
+      }
+    });
+  }
+</script>
 {%endblock%}

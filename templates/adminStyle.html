@@ -11266,7 +11266,8 @@ html {
   overflow: auto; }
 
 .container-scroller {
-  overflow: hidden; }
+  overflow: hidden; 
+}
 
 pre {
   background: color(gray-lighter);
@@ -13899,6 +13900,14 @@ code {
   -ms-flex-positive: 1;
   flex-grow: 1; }
 
+  .bt{
+    width: 40px;
+    text-align: center;
+    border-radius: 5px;
+    background: purple;
+    color: white;
+    border: none;
+  }
 /*# sourceMappingURL=style.css.map */
     </style>
 
@@ -13906,7 +13915,7 @@ code {
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <h1 style="color: #8E44AD; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;">BCREC</h1>
+          <h1 style="color: #8E44AD;  font-family: Garamond, serif;">BCREC</h1>
         <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
         <a class="navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a> -->
       </div>
@@ -13924,20 +13933,15 @@ code {
             </div>
           </form>
         </div>
-        <ul class="navbar-nav navbar-nav-right">
+        <ul class="navbar-nav navbar-nav-right" style=" font-family: Garamond, serif;">
           <li class="nav-item nav-profile dropdown">
             <div class="nav-profile-text">
-              <p class="mb-1 text-black">Pending Info <input readonly  value="{{count_pending_student}}" style="width: 40px; text-align: center;"></p>
+              <p class="mb-1 text-black">Pending Info <input readonly  value="{{count_pending_student}}" class="bt"></p>
             </div>
         </li>
           <li class="nav-item nav-profile dropdown">
             <div class="nav-profile-text" style="margin-left: 30px;">
-              <p class="mb-1 text-black" >verify Student <input readonly value="{{pending_verify_info}}" style="width: 40px; text-align: center;"></p>
-            </div>
-        </li>
-          <li class="nav-item nav-profile dropdown">
-            <div class="nav-profile-text" style="margin-left: 30px;">
-              <p class="mb-1 text-black">Mr. {{user_data.data.first_name}}</p>
+              <p class="mb-1 text-black" >verify Student <input readonly value="{{pending_verify_info}}" class = "bt"></p>
             </div>
         </li>
           <li class="nav-item nav-profile dropdown">
@@ -13953,7 +13957,7 @@ code {
           <li class="nav-item nav-logout d-none d-lg-block" style="margin-left: 50px;">
              <form action="{% url 'admin_logout'%}" method="post">
                  {%csrf_token%}
-                 <button type="submit" class="btn" >Logout</button>
+                 <button type="submit" class="btn"  style=" font-family: Garamond, serif;">Logout</button>
              </form>
           </li>
           <li class="nav-item nav-settings d-none d-lg-block">
@@ -13968,7 +13972,7 @@ code {
       </div>
     </nav>
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper" style=" font-family: Garamond, serif;">
         {%block partial %}
         {%endblock%}
     </div>

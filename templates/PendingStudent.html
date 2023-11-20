@@ -86,17 +86,17 @@
           <td>{{data.user.email}}</td>
           <td>{{data.gender}}</td>
           <td>
-            <form action="{%url 'accept_student' data.user_id %}" method="post">
-              {%csrf_token%}
-              <button type="submit" class="btn btn-outline-success">Accept</button>
+            <form action="{% url 'accept_student' data.user_id %}" method="post" onsubmit="handleConfirmation('Accept', this); return false;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-success">Accept</button>
             </form>
-          </td>
-          <td>
-            <form action="{% url 'reject_student' data.user_id %}" method="post">
-              {%csrf_token%}
-              <button type="submit" class="btn btn-outline-danger">Reject</button>
+        </td>
+        <td>
+            <form action="{% url 'reject_student' data.user_id %}" method="post" onsubmit="handleConfirmation('Reject', this); return false;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Reject</button>
             </form>
-          </td>
+        </td>
         </tr>
         {%endfor%}
       </tbody>
@@ -104,4 +104,22 @@
     </table>
   </div>
 </div>
+
+<script>
+  // Function to handle the SweetAlert confirmation
+  function handleConfirmation(action, form) {
+      Swal.fire({
+          title: 'Confirm Action',
+          text: `Are you sure you want to ${action.toLowerCase()} this student?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: `Yes, ${action.toLowerCase()} it!`,
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              form.submit();
+          }
+      });
+  }
+</script>
 {%endblock%}
