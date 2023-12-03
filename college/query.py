@@ -106,9 +106,9 @@ def update_student_reject(req,sid):
         return False
     return True
 
-def get_all_admin_data(req):
+def get_all_admin_data(req,dept):
     try:
-        all_admin_data = profile.objects.select_related('user').filter(profile = 'admin').filter(status = 'accept')
+        all_admin_data = profile.objects.select_related('user').filter(profile = 'admin',status = 'accept', dept = dept)
         return all_admin_data
     except:
         return False

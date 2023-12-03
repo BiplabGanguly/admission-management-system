@@ -13900,14 +13900,9 @@ code {
   -ms-flex-positive: 1;
   flex-grow: 1; }
 
-  .bt{
-    width: 40px;
-    text-align: center;
-    border-radius: 5px;
-    background: purple;
-    color: white;
-    border: none;
-  }
+ .tt{
+  font-size: 18px;
+ }
 /*# sourceMappingURL=style.css.map */
     </style>
 
@@ -13936,12 +13931,12 @@ code {
         <ul class="navbar-nav navbar-nav-right" style=" font-family: Garamond, serif;">
           <li class="nav-item nav-profile dropdown">
             <div class="nav-profile-text">
-              <p class="mb-1 text-black">Pending Info <input readonly  value="{{count_pending_student}}" class="bt"></p>
+              <p class="mb-1 text-black"> Pending Info <span class="tt">{{count_pending_student}}</span></p>
             </div>
         </li>
           <li class="nav-item nav-profile dropdown">
             <div class="nav-profile-text" style="margin-left: 30px;">
-              <p class="mb-1 text-black" >verify Student <input readonly value="{{pending_verify_info}}" class = "bt"></p>
+              <p class="mb-1 text-black" >verify Student <span class="tt">{{pending_verify_info}}</span></p>
             </div>
         </li>
           <li class="nav-item nav-profile dropdown">

@@ -1,72 +1,83 @@
-
 {% extends 'adminStyle.html' %}
 {%block partial %}
+
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
   // Function to show the loader
   function showLoader() {
-     document.getElementById('loader').style.display = 'block';
-   }
- 
-   // Function to hide the loader
-   function hideLoader() {
-     document.getElementById('loader').style.display = 'none';
-   }
- 
-   // Simulating a delay (you can replace this with your actual operation)
-   function simulateOperation() {
-     showLoader();
-     setTimeout(function() {
-       // Simulated operation that takes some time
-       hideLoader();
-     }, 1000); // 3000 milliseconds (3 seconds) for simulation
-   }
- 
-   // Call the simulateOperation function when the page loads
-   window.onload = simulateOperation;
- 
-   tinymce.init({
-     selector: '#mytextarea',
-     plugins: [
-       'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
-       'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
-       'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
-     ],
-     toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
-       'alignleft aligncenter alignright alignjustify | ' +
-       'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
-   });
-
-   function validateForm() {
-    // Get the value of the textarea
-    var noticeValue = document.getElementById("mytextarea").value;
-
-    // Check if the textarea is empty or contains only whitespace
-    if (!noticeValue.trim()) {
-      // Show SweetAlert for empty textarea
-      swal("Error", "Please enter a notice before publishing", "error");
-      return false; // Prevent form submission
-    }
-
-    // If the textarea is not empty, allow form submission
-    return true;
+    document.getElementById('loader').style.display = 'block';
   }
- </script>
+
+  // Function to hide the loader
+  function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+  }
+
+  // Simulating a delay (you can replace this with your actual operation)
+  function simulateOperation() {
+    showLoader();
+    setTimeout(function () {
+      // Simulated operation that takes some time
+      hideLoader();
+    }, 1000); // 3000 milliseconds (3 seconds) for simulation
+  }
+
+  // Call the simulateOperation function when the page loads
+  window.onload = simulateOperation;
+
+  tinymce.init({
+    selector: '#mytextarea',
+    plugins: [
+      'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+      'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+      'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+    ],
+    toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+      'alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+  });
+
+  function confirmSubmit() {
+    return new Promise((resolve, reject) => {
+      swal({
+        title: "Are you sure?",
+        text: "You are about to submit the form.",
+        icon: "warning",
+        buttons: ["Cancel", "Submit"],
+      }).then((isConfirmed) => {
+        if (isConfirmed) {
+          resolve(true); // Resolve the promise if the user confirms
+        } else {
+          reject(false); // Reject the promise if the user cancels
+        }
+      });
+    });
+  }
+
+  function submitForm() {
+    confirmSubmit().then(() => {
+      var form = document.getElementById("formdata");
+      form.submit(); 
+    }).catch(() => {
+
+    });
+  }
+</script>
 
 <style>
-      #loader {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.7);
-      text-align: center;
-      padding-top: 20%;
-      z-index: 1000;
-    }
+  #loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    padding-top: 20%;
+    z-index: 1000;
+  }
 
   .table {
     width: 960px;
@@ -103,10 +114,16 @@
   .tblbtn {
     height: 40px;
   }
-  .publish{
+
+  .publish {
     margin-top: 20px;
     margin-left: 20px;
     border-radius: 12px;
+  }
+
+  .text {
+    width: auto;
+    height: 600px;
   }
 </style>
 <div id="loader">
@@ -144,10 +161,10 @@
 </nav>
 <!-- Table -->
 <div class="main-panel" style="background-color: #f2edf3;">
-  <form method="post" action="{% url 'publish_notice' uid %}" onsubmit="return validateForm()">
+  <form method="post" action="{% url 'publish_notice' uid %}" id="formdata">
     {% csrf_token %}
-    <textarea id="mytextarea" name="notice"></textarea><br>
-    <button type="submit" class="btn btn-outline-success publish">Publish</button>
+    <textarea id="mytextarea" name="notice" class="text"></textarea><br>
+    <button type="button" class="btn btn-outline-success publish" onclick="submitForm()">Publish</button>
   </form>
 </div>
 {%endblock%}

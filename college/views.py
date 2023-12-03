@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from college.query import get_profile
 from college import query
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
+
 
 def home(req):
     return render(req,"home.html")
@@ -41,10 +43,13 @@ def admin_post_ragistration(req):
         if ps == c_pass:
             result = query.create_user_admin(req,f_name,l_name,email,username,ps,dept)
             if result == True:
+                messages.success(req, 'registration successfull!')
                 return redirect('admin_login')
             else:
+                messages.error(req, 'registration failed!')
                 return redirect('admin_ragistration')
         else:
+            messages.error(req, 'registration failed!')
             return redirect('admin_ragistration')
 
 
@@ -62,9 +67,11 @@ def login_admin_post(req):
                 login(req, user)
                 return redirect('status_page',user.id)
             elif prof.status == 'reject' and prof.profile == 'admin':
-                return redirect('home')
+                messages.error(req, 'login failed!')
+                return redirect('admin_login')
         else:
-            return redirect('home')
+            messages.error(req, 'login failed!')
+            return redirect('admin_login')
         
 
 def student_post_ragistration(req):
@@ -80,10 +87,13 @@ def student_post_ragistration(req):
         if ps == c_pass:
             result = query.create_user_student(req,f_name,l_name,email,username,ps,dept,gender)
             if result == True:
+                messages.success(req, 'registration successfull!')
                 return redirect('student_login')
             else:
+                messages.error(req, 'registration failed!')
                 return redirect('student_registration')
         else:
+            messages.error(req, 'registration failed!')
             return redirect('student_registration')
 
 
@@ -103,7 +113,8 @@ def login_student_post(req):
                     login(req, user)
                     return redirect('accept',user.id)
                 elif edu.verify == 'reject' and prof.status == 'reject' and prof.profile == 'student':
-                    return redirect('home')
+                    messages.error(req, 'login failed!')
+                    return redirect('student_login')
             except:
                 if prof.profile == 'student' and prof.status == 'accept':
                     login(req, user)
@@ -112,9 +123,11 @@ def login_student_post(req):
                     login(req, user)
                     return redirect('status_page',user.id)
                 elif prof.status == 'reject'and prof.profile == 'student':
-                    return redirect('home')
+                    messages.error(req, 'login failed!')
+                    return redirect('student_login')
         else:
-            return redirect('home')
+            messages.error(req, 'login failed!')
+            return redirect('student_login')
 
 
 # login required.......................................................
@@ -125,7 +138,7 @@ def admin_panel(req,uid):
     # query
     user_data = query.get_user(req,uid)
     prof_data  = get_profile(req,uid)
-    all_admin = query.get_all_admin_data(req)
+    all_admin = query.get_all_admin_data(req,prof_data.dept)
     count_dept = query.count_dept(req)
     total_student = query.total_student(req)
     total_dept_student = query.total_dept_student(req,prof_data.dept)
@@ -228,7 +241,6 @@ def add_student_data(req,uid):
         session_end = req.POST['session_end']
 
         date = str(dob)
-        print("hello")
         query.add_student_details(req,uid,father_name, mother_name,gender,address,dept,date)
         query.upadte_user_details(req,uid,f_name,l_name,email,username)
         query.add_student_education(req,uid,ten_board,ten_percentage,twelve_board,twelve_percentage,university,gpa,session_start,session_end)

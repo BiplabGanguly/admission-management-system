@@ -80,7 +80,40 @@
       </div>
     </nav>
   </section>
+  {% if messages %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          {% for message in messages %}
+              {% if message.tags %}
+                  var alertType = "{{ message.tags }}";
+              {% else %}
+                  var alertType = "info"; 
+              {% endif %}
+
+              var messageText = "{{ message }}";
+
+              var alertTypesMap = {
+                  'error': 'error',
+                  'success': 'success',
+                  'info': 'info',
+                  'warning': 'warning'
+              };
+              var sweetAlertType = alertTypesMap[alertType] || 'info';
+              Swal.fire({
+                  title: sweetAlertType.charAt(0).toUpperCase() + sweetAlertType.slice(1), 
+                  text: messageText,
+                  icon: sweetAlertType,
+                  showConfirmButton: false,
+                  timer: 3000  
+              });
+          {% endfor %}
+      });
+  </script>
+{% endif %}
+
 {%block content%}
+
 {%endblock%}
   <!-- Optional JavaScript; choose one of the two! -->
 
